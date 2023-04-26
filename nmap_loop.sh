@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 #nmap_list.sh
 
 #Malicious Traffic Generator
@@ -16,16 +16,16 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -e parameterA -t parameterB -f parameterC"
-   echo -e "\t-e Numero de Execuções Concorrentes"
-   echo -e "\t-t Endereço IP Target"
-   echo -e "\t-f Nome do arquivo (Filename) dos NMAPs"
+   echo -e "\t-e Desired traffic throughput"
+   echo -e "\t-t Target IP"
+   echo -e "\t-f Filename of NMAP list"
    exit 1 # Exit script after printing help
 }
 
 while getopts e:t:f: flag
 do
     case "${flag}" in
-        e) traffic=${OPTARG};; #Desired Traffic Volume (throughput)
+        e) traffic=${OPTARG};;  #Desired Traffic Volume (throughput)
         t) IP=${OPTARG};;       #Target address IP
         f) filename=${OPTARG};; #Filename of the nmap list
     esac
@@ -80,7 +80,7 @@ IPZ="192.168.15.90"
 echo "IPs (fakes): $IPL1, $IPL2, $IPL3"
 echo "Target Subnet: $NET"
 
-nmaplist=$(cat /home/kali/ABTRAP/nmap_list_nano.txt)
+nmaplist=$(cat /home/kali/ABTRAP/nmap_list.txt)
 printf '%s\n' "$nmaplist"
 
 #CoreLoop variables:
@@ -104,6 +104,7 @@ echo "start core_loop $n times"
 		done <<< $nmaplist
 		echo "sleep for $t1 seconds"
 		sleep $t1
+		echo "sleep done"
 	done
 echo "Done core_loop"
 }
