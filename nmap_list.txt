@@ -1,3 +1,2 @@
 nmap -sP $NET
 nmap -sT $IP
-nmap -sP 192.168.15.0/24
