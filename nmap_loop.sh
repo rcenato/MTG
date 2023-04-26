@@ -6,7 +6,7 @@
 #github.com/rcenato/MTG.git
 #INFO:
 #Throuput generated per execution:
-#Group 1(nmap_list1.txt): $X=1 $t1=4
+#Group 1(nmap_list1.txt): $X=60.3 (Traffic generated per execution) $t1=4 (time elapsed)
 #Group 2(nmap_list2.txt): $Y $t2
 #Group 3(nmap_list3.txt): $Z $t3
 
@@ -18,7 +18,7 @@ helpFunction()
    echo "Usage: $0 -e parameterA -t parameterB -f parameterC"
    echo -e "\t-e Desired traffic throughput"
    echo -e "\t-t Target IP"
-   echo -e "\t-f Filename of NMAP list"
+   echo -e "\t-f time in seconds"
    exit 1 # Exit script after printing help
 }
 
@@ -27,11 +27,11 @@ do
     case "${flag}" in
         e) traffic=${OPTARG};;  #Desired Traffic Volume (throughput)
         t) IP=${OPTARG};;       #Target address IP
-        f) filename=${OPTARG};; #Filename of the nmap list
+        f) time=${OPTARG};; #Filename of the nmap list
     esac
 done
 # Print helpFunction in case parameters are empty
-if [ -z "$traffic" ] || [ -z "$IP" ] || [ -z "$filename" ]
+if [ -z "$traffic" ] || [ -z "$IP" ] || [ -z "$time" ]
 then
    echo "Some or all of the parameters are empty";
    helpFunction
@@ -64,7 +64,6 @@ LIST="192.168.15.36"
 #Target Subnet
 #NET="192.168.15.0/24"
 
-
 #Fake IPs - for decoy (-D) and spoof (-S)
 IPL1="192.168.15.129"
 IPL2="192.168.15.130"
@@ -77,7 +76,7 @@ MACL="00:0c:29:87:1f:01"
 IPZ="192.168.15.90"
 
 #Script data
-echo "IPs (fakes): $IPL1, $IPL2, $IPL3"
+#echo "IPs (fakes): $IPL1, $IPL2, $IPL3"
 echo "Target Subnet: $NET"
 
 nmaplist=$(cat /home/kali/ABTRAP/nmap_list.txt)
@@ -85,9 +84,11 @@ printf '%s\n' "$nmaplist"
 
 #CoreLoop variables:
 X="1"
-t1="4"
+Y="10"
+Z="100"
+t1="2"
 echo "$traffic"   
-# --- End Definitions Section ---    
+# --- End Definitions Section ---
 # check if we are being sourced by another script or shell
 [[ "${#BASH_SOURCE[@]}" -gt "1" ]] && { return 0; }
 
@@ -112,10 +113,18 @@ echo "Done core_loop"
 # --- Start Decision Section ---
 if [ $traffic -ge $X ]
 then
-	echo "entrou"
+	echo "desired traffic: $traffic"
 	exec=$((traffic / X))
+	exec=$((exec * time))
 	echo $exec
 	core_loop $exec
+	
+elif [ $traffic -ge $Y ]
+then
+	echo "Loop for group 2"
+elif [ $traffic -ge $Z ]
+then
+	echo "Loop for group 3"
 else
 	echo "else"
 fi
