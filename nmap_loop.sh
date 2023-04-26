@@ -1,8 +1,16 @@
-#!/bin/bash
-
+!/bin/bash
 #nmap_list.sh
 
-#TRANSLATE ALL TO ENGLISH
+#Malicious Traffic Generator
+#author: Rafael Cenato
+#github.com/rcenato/MTG.git
+#INFO:
+#Throuput generated per execution:
+#Group 1(nmap_list1.txt): $X=1 $t1=4
+#Group 2(nmap_list2.txt): $Y $t2
+#Group 3(nmap_list3.txt): $Z $t3
+
+
 
 helpFunction()
 {
@@ -17,31 +25,31 @@ helpFunction()
 while getopts e:t:f: flag
 do
     case "${flag}" in
-        e) con_loop=${OPTARG};; #Numero de Execuções Concorrentes
-        t) IP=${OPTARG};;       #Endereço IP Target
-        f) filename=${OPTARG};; #Nome do arquivo (Filename) dos NMAPs
+        e) traffic=${OPTARG};; #Desired Traffic Volume (throughput)
+        t) IP=${OPTARG};;       #Target address IP
+        f) filename=${OPTARG};; #Filename of the nmap list
     esac
 done
 # Print helpFunction in case parameters are empty
-if [ -z "$con_loop" ] || [ -z "$IP" ] || [ -z "$filename" ]
+if [ -z "$traffic" ] || [ -z "$IP" ] || [ -z "$filename" ]
 then
    echo "Some or all of the parameters are empty";
    helpFunction
 fi
 
 
-#Variável NET obtida a partir do IP da vitima (rede /24)
+#Get the NET variable from IP netmask /24
 export NET="${IP%.*}".0/24""
-export IP=$IP
+export $IP
 
 echo "Username: "
  whoami
-echo "My IP: "
+echo "My IP: " 
 ifconfig eth0 | grep 'inet ' | cut -c 14-28
 echo "Started on: "
  date
 echo "Current folder of the script:"
- pwd
+ pwd  
 echo "Victim IP $IP"
 
 #VM interface
@@ -72,48 +80,41 @@ IPZ="192.168.15.90"
 echo "IPs (fakes): $IPL1, $IPL2, $IPL3"
 echo "Target Subnet: $NET"
 
-nmaplist=$(cat nmap_list.txt)
+nmaplist=$(cat /home/kali/ABTRAP/nmap_list_nano.txt)
 printf '%s\n' "$nmaplist"
-echo "inicio"
-echo ",$IP,"
 
-
-# --- End Definitions Section ---
+#CoreLoop variables:
+X="1"
+t1="4"
+echo "$traffic"   
+# --- End Definitions Section ---    
 # check if we are being sourced by another script or shell
 [[ "${#BASH_SOURCE[@]}" -gt "1" ]] && { return 0; }
 
-echo "Alternativa 1: Usar Source para chamar outro script .sh, com passagem de parametro"
-for n in $(seq $con_loop)
-do
-    source nmap_list.sh $IP $NET
-done
-echo "Feita leitura"
-echo ""
-echo "Alternativa 2: readfile from .txt, chamar função com eval"
+#Core Loop function:
+core_loop(){
+n=$1
+echo "start core_loop $n times"
+	for x in $(seq $n)
+	do
+		while IFS= read -r line
+		do
+    			echo "[core_loop]Entered $line"
+    			eval $line&
+		done <<< $nmaplist
+		echo "sleep for $t1 seconds"
+		sleep $t1
+	done
+echo "Done core_loop"
+}
 
-while IFS= read -r line
-do
-    echo "entrou $line"
-    echo $line
-    eval $line
-done <<< $nmaplist
-
-echo "Feito"
-echo ""
-echo "Alternativa 3: Ler as linhas do arquivo .txt para um array e executar a partir deste script"
-declare -a array
-declare -i i=0
-
-for x in $(seq $con_loop)
-do
-    while IFS= read -r line;
-    do
-    	echo $line
-    	eval $line
-    	array[i]=$line
-    	echo $$
-    	echo ${array[i]}
-    	i=$i+1
-    	eval ${array[i]}
-    done < $filename
-done
+# --- Start Decision Section ---
+if [ $traffic -ge $X ]
+then
+	echo "entrou"
+	exec=$((traffic / X))
+	echo $exec
+	core_loop $exec
+else
+	echo "else"
+fi
