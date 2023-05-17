@@ -1,0 +1,107 @@
+nmap -vvv $LIST
+nmap -f -vvv $LIST
+nmap -sT $IP
+nmap -f -sT $IP
+nmap -F $IP
+nmap -f -F $IP
+nmap --reason $IP
+nmap -f --reason $IP
+nmap --open $IP
+nmap -f --open $IP
+nmap -f -vvv $IP
+nmap --mtu 24 $IP
+nmap -f --mtu 24 $IP
+nmap -D RND:5 $IP
+nmap -f -D RND:5 $IP
+nmap -Pn $IP
+nmap -f -Pn $IP
+nmap -PU $IP
+nmap -f -PU $IP
+nmap -f -Pn -PU $IP
+nmap -PS $IP
+nmap -f -Pn -PS $IP
+nmap -sS $IP
+nmap -f -sS $IP
+nmap -f -Pn -sS $IP
+nmap -sA $IP
+nmap -sW $IP
+nmap -f -sW $IP
+nmap -f -Pn -sW $IP
+nmap --source-port 80 $IP
+nmap -f --source-port 80 $IP
+nmap -f -Pn --source-port 80 $IP
+nmap --data-length 83 $IP
+nmap --data-length 44 $IP
+nmap --data-length 128 $IP
+nmap --data-length 32 $IP
+nmap -f --data-length 83 $IP
+nmap -f -Pn --data-length 64 $IP
+nmap -f -Pn --data-length 0 $IP
+nmap --randomize-hosts $IP
+nmap -f --randomize-hosts $IP
+nmap -f -Pn --randomize-hosts $IP
+nmap --script=firewall-bypass $IP
+nmap -f --script=firewall-bypass $IP
+nmap -f -Pn --script=firewall-bypass $IP
+nmap -nmap --script=firewall-bypass --script-args firewall-bypass.helper=ftp, firewall-bypass.targetport=22 $IP
+nmap --script=firewalk --traceroute $IP
+nmap -f --script=firewalk --traceroute $IP
+nmap -f -Pn --script=firewalk --traceroute $IP
+nmap --script=firewalk --traceroute --script-args=firewalk.max-retries=1 $IP
+nmap --script=firewalk --traceroute --script-args=firewalk.probe-timeout=400ms $IP
+nmap --script=firewalk --traceroute --script-args=firewalk.max-probed-ports=7 $IP
+nmap --script=http-methods $IP
+nmap -f --script=http-methods $IP
+nmap -f -Pn --script=http-methods $IP
+nmap --script=http-methods --script-args http-methods.url-path=/website $IP
+nmap --script=rpcinfo $IP
+nmap -f --script=rpcinfo $IP
+nmap -f -Pn --script=rpcinfo $IP
+nmap -f $IP --script=ajp-methods
+nmap -f -Pn $IP --script=ajp-methods
+nmap $IP --script=ajp-methods
+nmap --script=ms-sql-info $IP
+nmap -f --script=ms-sql-info $IP
+nmap -f -Pn --script=ms-sql-info $IP
+nmap --script=http-vhosts -p 80,8080,443 $IP
+nmap --script=http-vhosts $IP
+nmap -f --script=http-vhosts $IP
+nmap -f -Pn --script=http-vhosts $IP
+nmap -f --script=http-headers $IP
+nmap -f -Pn --script=http-headers $IP
+nmap -f --script=http-method-tamper $IP
+nmap -f -Pn --script=http-method-tamper $IP
+nmap -p80 --script=http-method-tamper --script-args http-method-tamper.paths={/protected/db.php,/protected/index.php} $IP
+nmap -f --script=db2-das-info $IP
+nmap -f -Pn --script=db2-das-info $IP
+nmap --script=enip-info -f $IP
+nmap --script=enip-info -f -Pn $IP
+nmap --script=smb-server-stats.nse $IP
+nmap -f --script=smb-server-stats.nse $IP
+nmap -p80 --script http-waf-detect $IP
+nmap --script http-waf-detect $IP
+nmap -f --script http-waf-detect $IP
+nmap -f -Pn --script http-waf-detect $IP
+nmap -p80 --script http-waf-detect --script-args=http-waf-detect.aggro,http-waf-detect.uri=/testphp.vulnweb.com/artists.php $IP
+nmap --script=http-waf-fingerprint $IP
+nmap -f --script=http-waf-fingerprint $IP
+nmap -f -Pn --script=http-waf-fingerprint $IP
+nmap --script=http-waf-fingerprint --script-args http-waf-fingerprint.intensive=1 $IP
+nmap --script=smb-enum-processes.nse $IP
+nmap -f --script=smb-enum-processes.nse $IP
+nmap -Pn --script=smb-enum-processes.nse $IP
+nmap --script=http-affiliate-id.nse --script-args http-affiliate-id.url-path=/website $IP
+nmap --script=http-affiliate-id.nse $IP
+nmap -f --script=http-affiliate-id.nse $IP
+nmap -Pn --script=http-affiliate-id.nse $IP
+nmap --script=cics-info $IP
+nmap -f --script=cics-info $IP
+nmap -f -Pn --script=cics-info $IP
+nmap -sV --script=banner $IP
+nmap -f --script=banner $IP
+nmap -f -Pn --script=banner $IP
+nmap -sV $IP
+nmap -f -sV $IP
+nmap -sV --script=http-headers $IP
+nmap -sV --script=http-method-tamper $IP
+nmap -sV --script=db2-das-info $IP

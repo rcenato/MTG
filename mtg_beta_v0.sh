@@ -1,5 +1,4 @@
 #!/bin/bash
-#nmap_list.sh
 
 #Malicious Traffic Generator
 #author: Rafael Cenato
@@ -9,8 +8,6 @@
 #Group 1(nmap_list1.txt): $X=60.3 (Traffic generated per execution) $t1=4 (time elapsed)
 #Group 2(nmap_list2.txt): $Y $t2
 #Group 3(nmap_list3.txt): $Z $t3
-
-
 
 helpFunction()
 {
@@ -81,15 +78,17 @@ echo "Target Subnet: $NET"
 
 nmap_group1=$(cat nmap_group1.txt)
 nmap_group2=$(cat nmap_group2.txt)
+printf '%s\n' "$nmap_group2"
 nmap_group3=$(cat nmap_group3.txt)
-nmaplist=$(cat /home/kali/ABTRAP/nmap_list.txt)
+nmaplist=$(cat nmap_list.txt)
 printf '%s\n' "$nmaplist"
 
 #CoreLoop variables:
 X="2"
 Y="10"
 Z="100"
-t1="2"
+t1="1"
+t2="2"
 echo "$traffic"   
 # --- End Definitions Section ---
 # check if we are being sourced by another script or shell
@@ -99,6 +98,8 @@ echo "$traffic"
 core_loop(){
 n=$1
 group=$2
+dt=$3
+nmap_group=$(cat nmap_group$2.txt)
 echo "start core_loop $n times"
 	for x in $(seq $n)
 	do
@@ -106,9 +107,9 @@ echo "start core_loop $n times"
 		do
     			echo "[core_loop]Entered $line"
     			eval $line&
-		done <<< $group
-		echo "sleep for $t1 seconds"
-		sleep $t1
+		done <<< $nmap_group
+		echo "sleep for $dt seconds"
+		sleep $dt
 		echo "sleep done"
 		pkill nmap
 	done
@@ -119,16 +120,16 @@ echo "Done core_loop"
 if [[ "$traffic" == "low" ]];
 then
 	echo "desired traffic: $traffic"
-	exec=$(($time / X))
-	group="nmap_group1"
+	exec=$(($time / $t1))
+	group="1"
 	echo $exec
-	core_loop $exec, $group
+	core_loop $exec $group $t1
 else
 	echo "else"
 	echo "desired traffic: $traffic"
-	exec=$(($time / X))
-	group="nmap_group2"
+	exec=$(($time / $t2))
+	group="2"
 	echo $exec
-	core_loop $exec, $group
+	core_loop $exec $group $t2
 
 fi

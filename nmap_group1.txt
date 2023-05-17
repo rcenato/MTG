@@ -1,0 +1,28 @@
+nmap -S $IPL1 -e eth0 $IP
+nmap -f -S $IPL1 -e eth0 $IP
+nmap -f -Pn -sO $IP
+nmap -f -Pn -sU $IP
+nmap -f -sA› $IP
+nmap -f -Pn -sA› $IP
+nmap --iflist
+nmap -f --iflist
+nmap -f -Pn --iflist
+nmap -vvv -sn $LIST
+nmap --top-ports 10 $IP
+nmap -f --top-ports 10 $IP
+nmap $IP -p 80 --source-port 53
+nmap $IP -p 80 --data-length 40
+nmap -p 8009 $IP --script=ajp-methods
+nmap -p 445 --script=ms-sql-info $IP
+nmap -p 1433 --script=ms-sql-info --script-args=mssql.instance-port=1433 $IP
+nmap --script=enip-info -sU -p 44818 $IP
+nmap --script=smb-server-stats.nse -p445 $IP
+nmap -sU -sS --script=smb-server-stats.nse -p U:137,T:139 $IP
+nmap --script smb-enum-processes.nse -p445 $IP
+nmap -sU -sS --script smb-enum-processes.nse -p U:137,T:139 $IP
+nmap --script=cics-info -p 23 $IP
+nmap --script=cics-info --script-args cics-info.commands=logon applid(coolcics),cics-info.user=test,cics-info.pass=test,cics-info.cemt=ZEMT,cics-info.trans=CICA -p 23 $IP
+nmap -F $IP
+nmap -f -F $IP
+nmap -p80 --script=http-method-tamper --script-args http-method-tamper.paths={/protected/db.php,/protected/index.php} $IP
+nmap -p80 --script http-waf-detect --script-args=http-waf-detect.aggro,http-waf-detect.uri=/testphp.vulnweb.com/artists.php $IP
