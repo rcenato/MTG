@@ -84,9 +84,6 @@ nmaplist=$(cat nmap_list.txt)
 printf '%s\n' "$nmaplist"
 
 #CoreLoop variables:
-X="2"
-Y="10"
-Z="100"
 t1="1"
 t2="2"
 echo "$traffic"   
