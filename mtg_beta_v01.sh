@@ -88,7 +88,6 @@ echo "$traffic"
 #Core Loop function:
 core_loop(){
 n=$1
-group=$2
 dt=$3
 nmap_group=$(cat nmap_group$2.txt)
 echo "start core_loop $n times"
