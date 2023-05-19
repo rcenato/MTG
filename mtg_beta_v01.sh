@@ -124,12 +124,9 @@ else
 	core_loop $exec $group $t2
 
 fi
+
+# --- Time Control ----
 echo "Finished on: "
  dataFim=$(date '+%Y-%m-%d %H:%M:%S')
 echo ""$dataInicio, $dataFim"" >> controle.csv
-($time / $t2))
-	group="2"
-	echo $exec
-	core_loop $exec $group $t2
-
 fi
